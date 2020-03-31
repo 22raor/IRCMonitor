@@ -3,4 +3,13 @@
   <groupId>rkp</groupId>
   <artifactId>irc</artifactId>
   <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+<!-- https://mvnrepository.com/artifact/org.jibble.pircbot/pircbot -->
+<dependency>
+  <groupId>pircbot</groupId>
+  <artifactId>pircbot</artifactId>
+  <version>1.5.0</version>
+</dependency>
+
+  </dependencies>
 </project>
