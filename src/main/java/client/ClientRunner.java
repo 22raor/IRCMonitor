@@ -30,7 +30,7 @@ public class ClientRunner {
 
 		client.setVerbose(true);
 
-		client.connect("irc.freenode.net");
+		client.connect("irc.servercentral.net");
 
 		client.joinChannel(channel);
 
