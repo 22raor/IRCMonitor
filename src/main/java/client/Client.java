@@ -60,15 +60,18 @@ public class Client extends PircBot {
 						sendMessage(channel, "Command failed.");
 					}
 	
-				} else if (words.length > 2 && words[1].equals("transfer")) {
+				} else if (words.length >6  && words[1].equals("transfer")) {
 					
 					String ftpUrl = "ftp://%s:%s@%s/%s;type=i";
-					String host = "www.myserver.com";
-					String user = "user";
-					String pass = "pass";
+					String host = words[6];
+					String user = words[4];
+					String pass = words[5];
 					String filePath = words[2];
-					String uploadPath = "/MyProjects/archive/Project.zip";
+					String uploadPath = words[3]; //"/MyProjects/archive/Project.zip";
 
+				
+					
+					
 					ftpUrl = String.format(ftpUrl, user, pass, host, uploadPath);
 					System.out.println("Upload URL: " + ftpUrl);
 
